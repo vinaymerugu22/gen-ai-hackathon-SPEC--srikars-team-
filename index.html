@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Learn Sphere</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f2f6ff;
+  margin: 0;
+}
+header {
+  background: #2563eb;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+section {
+  padding: 20px;
+}
+.box {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+#chat {
+  height: 200px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  overflow-y: auto;
+}
+.user { text-align: right; color: blue; margin: 5px; }
+.bot { text-align: left; color: green; margin: 5px; }
+footer {
+  background: #111;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Learn Sphere</h1>
+  <p>Generative AI Powered Machine Learning Learning System</p>
+</header>
+
+<section>
+  <div class="box">
+    <h2>About</h2>
+    <p>
+      Learn Sphere is an AI-powered learning platform that helps students
+      understand Machine Learning concepts easily using Generative AI.
+    </p>
+  </div>
+
+  <div class="box">
+    <h2>Features</h2>
+    <ul>
+      <li>AI Tutor</li>
+      <li>Personalized Learning</li>
+      <li>Auto Quiz Generation</li>
+      <li>Code Examples</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h2>AI Tutor Demo</h2>
+    <div id="chat"></div>
+    <input id="q" placeholder="Ask ML question" style="width:80%;">
+    <button onclick="send()">Ask</button>
+  </div>
+</section>
+
+<footer>
+  © 2026 Learn Sphere | Hackathon Project
+</footer>
+
+<script>
+function send() {
+  let q = document.getElementById("q").value;
+  if (q === "") return;
+
+  let chat = document.getElementById("chat");
+  chat.innerHTML += "<div class='user'>" + q + "</div>";
+  document.getElementById("q").value = "";
+
+  fetch("/ask", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ question: q })
+  })
+  .then(response => response.json())
+  .then(data => {
+    chat.innerHTML += "<div class='bot'>AI: " + data.answer + "</div>";
+    chat.scrollTop = chat.scrollHeight;
+  });
+}
+</script>
+
+</body>
+</html>
